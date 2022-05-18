@@ -1,12 +1,19 @@
 import "./message.css";
 import { format } from "timeago.js";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
-export default function Message({message,own}) {
+
+export default function Message({message,own ,currentId}) {
+  const [user, setUser] = useState({});
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER
+
+  const {user : currentUser}=useContext(AuthContext);
   return ( 
     <div className = { own ? "message own" : "message" }>
         <div className="messageTop">
-            <img className="messageImg" src="https://images.pexels.com/photos/1261169/pexels-photo-1261169.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="" />
 
+            <img className="messageImg" src={own? (currentUser.profilePicture ? PF + currentUser.profilePicture :  PF + "person/noAvatar.png") : PF + "person/noAvatar.png"} alt="" />
             <p className="messageText">{message.text}</p>
         </div>
         <div className="messageBottom">{format(message.createdAt)}</div>
